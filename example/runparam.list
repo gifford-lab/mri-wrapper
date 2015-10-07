@@ -1,0 +1,17 @@
+MRI_MAXITER  5
+TRAINVAL  /home/zeng/mri-wrapper/input/trainval.prototxt
+SOLVER  /home/zeng/mri-wrapper/input/solver.prototxt
+DEPLOY  /home/zeng/mri-wrapper/input/deploy.prototxt
+HYPER  /home/zeng/mri-wrapper/input/hyperparams.txt
+CAFFE_ROOT  /media/bigdrive1/caffe
+MRI_ROOT /home/zeng/Mri-app
+CAFFECNN_ROOT /home/zeng/caffe-cnn
+ORDER trainMRI
+modelname_file /home/zeng/mri-wrapper/input/modelname
+max_iter 300
+snapshot 100
+test_interval 100
+display 100
+model_topdir /media/bigdrive1/zeng/model/NFKB_peakPred_401bp
+data_src zeng@sox2.csail.mit.edu:/cluster/zeng/code/research/kmer-analysis/postprocess/compare_with_ctr/peakPred/embedding-CNN/target/NFKB_50flank/data
+gpunum 2

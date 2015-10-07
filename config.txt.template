@@ -1,0 +1,5 @@
+[generate-tasks]
+mother_model = trainval.prototxt
+mother_solver = solver.prototxt
+task_folder = MRIDIR/task
+hyperparams = hyperparams.txt

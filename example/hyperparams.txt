@@ -1,0 +1,2 @@
+base_lr: 1e-4, 1e-3
+num_output: 32,64
