@@ -58,6 +58,7 @@ with open(param_file,'w') as f:
     f.write('model_batchname %s\n' % 'mri-best')
 
 if 'trainMRI' in order:
+    print 'Trainning MRI'
     key = '\'MRIDIR\''
     value = '\'' + mrifolder +'\''
     cmd = ' '.join(['Rscript', join(cwd,'subPlaceholder.R'),join(cwd,'config.txt.template'),key,value,join(cwd,'config.txt')])
@@ -74,11 +75,15 @@ if 'trainMRI' in order:
         system('rm '+mrilogfile)
     chdir(mri_ROOT+'/mriapp')
     system('python MriApp.py')
+    chdir(cwd)
 
 if 'update' in order:
+    print 'Retrieving best param from Mri'
     refile = 'mri_summary'
     system(' '.join(['grep \'Final Extreme\'', mrilogfile, '>',refile]))
     re= parseMRI(refile)
+    print 'best params:'
+    print re
 
     calibsolver = join(mri_bestfolder,'solver.prototxt.calib')
     trainsolver = join(mri_bestfolder,'solver.prototxt')
@@ -106,10 +111,13 @@ if 'update' in order:
                 outs.write(x)
 
 if 'trainCaffe' in order:
+    print 'Training caffe on best mri-params'
     os.system(' '.join(['python',CAFFECNN_ROOT+'/run.py','train',param_file]))
 
 if 'testCaffe' in order:
+    print 'Testing caffe on best mri-params'
     os.system(' '.join(['python',CAFFECNN_ROOT+'/run.py','test',param_file]))
 
 if 'testEvalCaffe' in order:
+    print 'Evaluating caffe on best mri-params'
     os.system(' '.join(['python',CAFFECNN_ROOT+'/run.py','test_eval',param_file]))

@@ -4,6 +4,7 @@ def parseMRI(f):
 
     summary = []
     max_acc = -1
+    bestparam = []
     for d in data:
         acc = float(d.split('{')[1].split('}')[1].split(',')[1].split('\'')[1].split()[2])
         if acc >  max_acc:
