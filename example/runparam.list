@@ -14,4 +14,3 @@ test_interval 100
 display 100
 model_topdir /media/bigdrive1/zeng/model/NFKB_peakPred_401bp
 data_src zeng@sox2.csail.mit.edu:/cluster/zeng/code/research/kmer-analysis/postprocess/compare_with_ctr/peakPred/embedding-CNN/target/NFKB_50flank/data
-gpunum 2

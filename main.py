@@ -40,7 +40,7 @@ system(' '.join(['cp ',runparams['TRAINVAL'],trainval_file]))
 system(' '.join(['cp ',runparams['SOLVER'],solver_file]))
 system(' '.join(['cp ',runparams['DEPLOY'],deploy_tempalte]))
 system(' '.join(['cp ',runparams['HYPER'],hyperparam]))
-system(' '.join(['echo','\'device_id: '+runparams['gpunum']+'\'','>>',solver_file]))
+system(' '.join(['echo','\'device_id: '+gpunum+'\'','>>',solver_file]))
 
 transfer_params = {'max_iter','snapshot','test_interval','display'}
 
