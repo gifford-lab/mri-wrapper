@@ -12,7 +12,7 @@ task_list = MRIDIR/task/generated_tasks.txt	        ; Local list of tasks, simpl
 ; ---=== Client Settings ===---
 [mri-client]
 log_location = MRIDIR/mri.log                               ; Log save location
-debug = False                                            ; Enable for verbose logging and stdout
+debug = True                                            ; Enable for verbose logging and stdout
 caffe_root = CAFFEROOT                           ; Root caffe directory. Caffe must be built!
 caffe_bin = ./build/tools/caffe                         ; Path to caffe binary from root caffe folder
 solver_type = Caffe                                     ; Currently only Caffe is possible
