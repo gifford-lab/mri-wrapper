@@ -58,6 +58,10 @@ with open(param_file,'w') as f:
     f.write('model_batchname %s\n' % 'mri-best')
 
 if 'trainMRI' in order:
+    if exists(mrifolder):
+        print 'output folder ' + mrifolder + ' exists! Will be removed'
+        system('rm -r ' + mrifolder)
+
     print 'Trainning MRI'
     key = '\'MRIDIR\''
     value = '\'' + mrifolder +'\''
@@ -71,8 +75,6 @@ if 'trainMRI' in order:
 
     system('python generate_tasks.py random -n '+str(mri_maxiter))
 
-    if exists(mrilogfile):
-        system('rm '+mrilogfile)
     chdir(mri_ROOT+'/mriapp')
     system('python MriApp.py')
     chdir(cwd)
