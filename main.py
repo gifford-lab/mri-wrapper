@@ -56,6 +56,7 @@ with open(param_file,'w') as f:
     f.write('codedir %s\n' % CAFFECNN_ROOT)
     f.write('modelname %s\n' % modelname)
     f.write('model_batchname %s\n' % 'mri-best')
+    f.write('trial_num %s\n' % runparams['train_trial'])
 
 if 'trainMRI' in order:
     if exists(mrifolder):
