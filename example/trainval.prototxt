@@ -5,7 +5,7 @@ layer {
   top: "data"
   top: "label"
   hdf5_data_param {
-    source: "/media/bigdrive1//zeng/model/NFKB_peakPred_401bp/data/train.txt"
+    source: "/data/data/train.txt"
     batch_size: 100
   }
   include: { phase: TRAIN }
@@ -16,7 +16,7 @@ layer {
   top: "data"
   top: "label"
   hdf5_data_param {
-    source: "/media/bigdrive1/zeng/model/NFKB_peakPred_401bp/data/valid.txt"
+    source: "/data/data/valid.txt"
     batch_size: 100
   }
   include: { phase: TEST }
@@ -35,16 +35,15 @@ layer {
 	decay_mult: 0
   }
   convolution_param {
-	num_output: %{num_output}%
+	num_output: 16
     kernel_h: 1
-	kernel_w: 15
+	kernel_w: 24
 	stride_h: 1
 	stride_w: 1
 	pad_h: 0
-	pad_w: 7
+	pad_w: 12
 	weight_filler {
-	  type: "gaussian" # initialize the filters from a Gaussian
-      std: 0.01        # distribution with stdev 0.01 (default mean: 0)
+	  type: "xavier" # initialize the filters from a Gaussian
     }
 	bias_filler {
       type: "constant" # initialize the biases to zero (0)
@@ -66,7 +65,7 @@ layer{
   pooling_param {
     pool: MAX
 	kernel_h: 1
-	kernel_w: 188
+	kernel_w: 102
 	stride_h: 1
 	stride_w: 2     # step two pixels (in the bottom blob) between pooling regions
   }
@@ -86,10 +85,9 @@ layer {
     decay_mult: 0
   }
   inner_product_param {
-    num_output: 16
+    num_output: 32
     weight_filler {
-      type: "gaussian"
-      std: 0.01
+      type: "xavier"
 	}
 	bias_filler {
 	  type: "constant"
@@ -109,7 +107,7 @@ layer {
   bottom: "fc1"
   top: "fc1"
   dropout_param{
-    dropout_ratio: 0.5
+    dropout_ratio: %{dropout_ratio}%
   }
 }
 
@@ -129,8 +127,7 @@ layer {
   inner_product_param {
     num_output: 2
     weight_filler {
-      type: "gaussian"
-      std: 0.01
+      type: "xavier"
 	}
 	bias_filler {
 	  type: "constant"

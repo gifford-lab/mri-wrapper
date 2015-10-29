@@ -1,22 +1,22 @@
 name: "EmbedNet"
 input: "data"
 input_dim: 100
-input_dim: 50
+input_dim: 4
 input_dim: 1
-input_dim: 788
+input_dim: 101
 layers {
   name: "conv1"
   type: CONVOLUTION
   bottom: "data"
   top: "conv1"
   convolution_param {
-	num_output: %{num_output}%
+	num_output: 16
     kernel_h: 1
-	kernel_w: 15
+	kernel_w: 24
 	stride_h: 1
 	stride_w: 1
 	pad_h: 0
-	pad_w: 7
+	pad_w: 12
   }
 }
 layers{
@@ -33,7 +33,7 @@ layers{
   pooling_param {
     pool: MAX
 	kernel_h: 1
-	kernel_w: 188
+	kernel_w: 102
 	stride_h: 1
 	stride_w: 2      # step two pixels (in the bottom blob) between pooling regions
   }
@@ -44,11 +44,11 @@ layers {
   bottom: "pool1"
   top: "fc1"
   inner_product_param {
-    num_output: 16
+    num_output: 32
   }
 }
 layers{
-  name: "relu1"
+  name: "relu4"
   type: RELU
   bottom: "fc1"
   top: "fc1"
@@ -60,7 +60,7 @@ layers {
   bottom: "fc1"
   top: "fc1"
   dropout_param{
-    dropout_ratio: 0.5
+    dropout_ratio: %{dropout_ratio}%
   }
 }
 layers {
