@@ -6,7 +6,7 @@ Incooperate [Mri](http://mri.readthedocs.org/en/latest/index.html) and [Caffe-cn
 
 ## Data preparation
 
-Follow the instruction in [Caffe-cnn](https://github.com/gifford-lab/caffe-cnn) to prepare training data under $model_dir$/data/
+Follow the instruction in [Caffe-cnn](https://github.com/gifford-lab/caffe-cnn) to prepare  data under $model_dir$/data/
 
 The only difference is that in all the .txt files (like train.txt), the topfolder should be /data/data.
 
