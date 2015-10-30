@@ -1,12 +1,12 @@
-Incooperate [Mri]() and [Caffe-cnn]() to perform hyper-parameter search.
+Incooperate [Mri](http://mri.readthedocs.org/en/latest/index.html) and [Caffe-cnn](https://github.com/gifford-lab/caffe-cnn) to perform hyper-parameter search.
 
 ## Prerequisite
-### Install Docker
-Following [instruction](https://www.docker.com/) to install Docker
++ [Docker](https://www.docker.com/) 
 
-### Prepare training data
 
-Follow the instruction in [Caffe-cnn]() to prepare training data under $model_dir$/data/
+## Data preparation
+
+Follow the instruction in [Caffe-cnn](https://github.com/gifford-lab/caffe-cnn) to prepare training data under $model_dir$/data/
 
 The only difference is that in all the .txt files (like train.txt), the topfolder should be /data/data.
 
@@ -20,8 +20,20 @@ For example in train.txt:
 
 
 
-### Prepare model files for Caffe
-Follow the instruction in [Caffe-cnn]() to prepare caffe model files.
+## Model preparation
+
++ trainval.prototxt : training architecture
++ solver.prototxt: solver parameter
++ deploy.prototxt: testing architecture
++ hyperparams.txt: hyper-parameter specification
++ modelname: the name of the model
+
+##### Generate Caffe model files
+Follow the instruction in [Caffe-cnn](https://github.com/gifford-lab/caffe-cnn) to prepare caffe model files:
+
++ trainval.prototxt
++ solver.prototxt
++ deploy.prototxt
 
 The only differences are:
 
@@ -34,17 +46,40 @@ The only differences are:
 	+ display 
 
 
-### Prepare hyper-pameter search
-All the hyper-parameter to tune in solver.prototxt, trainval.prototxt should be surrounded by %{}% as exemplified in example/solver.protoxt and example/trainval.prototxt. The corresponding parameter in deploy.prototxt should also be converted accordingly.
+##### Modify model files for hyper-parameter search
 
-Generate a hyperparam file **in the same folder as the model files**. Refer to examples/hyperparams.txt
+For each hyperparameter to tune, replace the value with %{param}% instead. For example:
 
-### Prepare modelname file
-We require a file named "modelname" in the same folder as model files that specify the name of the version of the model tested. Refer to examples/modelname.
+In [solver.prototxt](https://github.com/gifford-lab/mri-wrapper/blob/master/example/solver.prototxt):
 
+```
+delta: %{delta}%
+```
 
-### Prepare runparam.list
-This file specificies all the parameters in the model. 
+In [trainval.prototxt](https://github.com/gifford-lab/mri-wrapper/blob/master/example/trainval.prototxt) / [deploy.prototxt](https://github.com/gifford-lab/mri-wrapper/blob/master/example/deploy.prototxt): 
+
+```
+layer {
+  name: "drop1"
+  type: "Dropout"
+  bottom: "fc1"
+  top: "fc1"
+  dropout_param{
+    dropout_ratio: %{dropout_ratio}%
+  }
+}
+```
+_Note that every parameter changed in trainval.prototxt should also be modified accordingly in deploy.prototxt_
+
+##### Specify value choices of hyper-parmeters
+
+In "hyperparams.list" file. See [Example](https://github.com/gifford-lab/mri-wrapper/blob/master/example/hyperparams.txt)
+
+##### Specify model name
+In "modelname" file. See [Example](https://github.com/gifford-lab/mri-wrapper/blob/master/example/modelname)
+
+## Prepare runparam.list
+This file specificies other parameters needed for training and testing.
 
 Example : (example/runparam.list)
 
