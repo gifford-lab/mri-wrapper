@@ -73,7 +73,7 @@ _Note that every parameter changed in trainval.prototxt should also be modified 
 
 ##### Specify value choices of hyper-parmeters
 
-In "hyperparams.list" file. See [Example](https://github.com/gifford-lab/mri-wrapper/blob/master/example/hyperparams.txt)
+In "hyperparams.txt" file. See [Example](https://github.com/gifford-lab/mri-wrapper/blob/master/example/hyperparams.txt)
 
 ##### Specify model name
 In "modelname" file. See [Example](https://github.com/gifford-lab/mri-wrapper/blob/master/example/modelname)
