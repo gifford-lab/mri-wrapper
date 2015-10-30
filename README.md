@@ -3,24 +3,31 @@ Incooperate [Mri](http://mri.readthedocs.org/en/latest/index.html) and [Caffe-cn
 ## Prerequisite
 + [Docker](https://www.docker.com/) 
 
+## Quick run
+_Replace the $REPO_HOME$ in the following command with the full path to the repository folder before running_
+
+```
+docker run -v $REPO_HOME$/example:/data -v $REPO_HOME$/example:/model -i --rm \
+--device /dev/nvidiactl \
+--device /dev/nvidia-uvm \
+--device /dev/nvidia0 \
+haoyangz/mri-wrapper python main.py /model/runparam.list 0
+```
+This will perform hyper-parameter searching, training and testing. The output will be under $REPO_HOME$/example/16_G/mri-best/best_trial/
+
 
 ## Data preparation
 
 Follow the instruction in [Caffe-cnn](https://github.com/gifford-lab/caffe-cnn) to prepare  data under $model_dir$/data/
 
-The only difference is that in all the .txt files (like train.txt), the topfolder should be /data/data.
+The only difference is that in [train.txt](https://github.com/gifford-lab/mri-wrapper/tree/master/example/data/train.txt)/[valid.txt](https://github.com/gifford-lab/mri-wrapper/tree/master/example/data/valid.txt)/[test.txt](https://github.com/gifford-lab/mri-wrapper/tree/master/example/data/test.txt), the topfolder should be /data/data.
 
-For example in train.txt:
-
-```
-/data/data/train.batch0.hd5
-/data/data/train.batch1.hd5
-...
-```
 
 
 
 ## Model preparation
+
+List of the files needed:
 
 + trainval.prototxt : training architecture
 + solver.prototxt: solver parameter
@@ -38,13 +45,12 @@ Follow the instruction in [Caffe-cnn](https://github.com/gifford-lab/caffe-cnn) 
 The only differences are:
 
 + In trainval.prototxt, the "source" in the input layer should be /data/data/train.txt and /data/data/valid.txt
-+ The following parameters in solver.prototxt are used for hyper-parameter search only. The ones used for actual training need to be specified in runparam.list
++ The following parameters in solver.prototxt are used for hyper-parameter search only. The ones used for actual training need to be specified in [runparam.list](https://github.com/gifford-lab/mri-wrapper/blob/master/example/runparam.prototxt)
 	
-	+ max_iter 
-	+ snapshot 
-	+ test_interval 
-	+ display 
-
+	+ `max_iter` 
+	+ `test_interval`
+	+ `snapshot`: In hyper-parameter search phase, we don't directly use the trained model. Therefore set this as arbitrarily large to save time and space.
+	+ `display`: As we don't care training loss in hyper-parameter search phase, this should be set to arbitrarily large to save time and space.
 
 ##### Modify model files for hyper-parameter search
 
@@ -73,10 +79,10 @@ _Note that every parameter changed in trainval.prototxt should also be modified 
 
 ##### Specify value choices of hyper-parmeters
 
-In "hyperparams.txt" file. See [Example](https://github.com/gifford-lab/mri-wrapper/blob/master/example/hyperparams.txt)
+In "[hyperparams.txt](https://github.com/gifford-lab/mri-wrapper/blob/master/example/hyperparams.txt)" file. 
 
 ##### Specify model name
-In "modelname" file. See [Example](https://github.com/gifford-lab/mri-wrapper/blob/master/example/modelname)
+In "[modelname](https://github.com/gifford-lab/mri-wrapper/blob/master/example/modelname)" file.
 
 ## Prepare runparam.list
 This file specificies other parameters needed for training and testing.
@@ -84,7 +90,7 @@ This file specificies other parameters needed for training and testing.
 Example : (example/runparam.list)
 
 ```
-MRI_MAXITER  30
+MRI_MAXITER  5
 TRAINVAL  /model/trainval.prototxt
 SOLVER  /model/solver.prototxt
 DEPLOY  /model/deploy.prototxt
@@ -99,8 +105,8 @@ snapshot 100
 test_interval 100
 display 10000
 model_topdir /data
-data_src zeng@sox2.csail.mit.edu:/cluster/zeng/code/research/kmer-analysis/     postprocess/compare_with_ctr/peakPred/embedding-CNN/target/NFKB_50flank/data
-train_trial 6
+data_src NA
+train_trial 2
 ```
 
 Constant params: (Don't change)
@@ -117,13 +123,13 @@ Constant params: (Don't change)
 
 Tweakable params:
 
-+ `MRI_MAXITER`: The number of hyper-parameter setting to try
++ `MRI_MAXITER`: The number of hyper-parameter setting to try.
 + `ORDER`: The order to carry out. Usually no need to change.
-+ `max_iter`: Maximum number of iteration in training phase
-+ `snapshot`: The iteration iterval to save model in training phase
-+ `test_interval`: The iteration interval to test on validation set in training phase
-+ `display`: The iteration interval to display the training loss in training phase
-+ `train_trial`: The number of training trial
++ `max_iter`: Maximum number of iteration in training phase.
++ `test_interval`: The iteration interval to test on validation set in training phase.
++ `snapshot`: The iteration iterval to save model in training phase. Should use same value as `test_interval`.
++ `display`: The iteration interval to display the training loss in training phase. For users who don't care the specific training process, this can be set to arbitrarily large to save time and space
++ `train_trial`: The number of training trial.
 
 
 ## Run the model
