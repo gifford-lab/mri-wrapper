@@ -2,6 +2,7 @@ Incooperate [Mri](http://mri.readthedocs.org/en/latest/index.html) and [Caffe-cn
 
 ## Prerequisite
 + [Docker](https://www.docker.com/) 
++ NVIDIA 346.46 driver
 
 ## Quick run
 _Replace the $REPO_HOME$ in the following command with the full path to the repository folder before running_
