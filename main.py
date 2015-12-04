@@ -69,8 +69,8 @@ if 'trainMRI' in order:
     cmd = ' '.join(['Rscript', join(cwd,'subPlaceholder.R'),join(cwd,'config.txt.template'),key,value,join(cwd,'config.txt')])
     system(cmd)
 
-    key = '\'' + ';'.join(['MRIDIR','CAFFEROOT']) + '\''
-    value = '\'' + ';'.join([mrifolder,CAFFE_ROOT]) + '\''
+    key = '\'' + ';'.join(['MRIDIR','CAFFEROOT','INFO']) + '\''
+    value = '\'' + ';'.join([mrifolder,CAFFE_ROOT,runparams['debugmode']]) + '\''
     cmd = ' '.join(['Rscript', join(cwd,'subPlaceholder.R'),join(cwd,'config.template'),key,value,join(mri_ROOT,'mriapp','config')])
     system(cmd)
 

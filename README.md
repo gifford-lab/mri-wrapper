@@ -108,6 +108,7 @@ display 10000
 model_topdir /data
 data_src NA
 train_trial 2
+debugmode INFO
 ```
 
 Constant params: (Don't change)
@@ -131,6 +132,7 @@ Tweakable params:
 + `snapshot`: The iteration iterval to save model in training phase. Should use same value as `test_interval`.
 + `display`: The iteration interval to display the training loss in training phase. For users who don't care the specific training process, this can be set to arbitrarily large to save time and space
 + `train_trial`: The number of training trial.
++ `debugmode`: The verbosity of log ('NONE'<'INFO'<'DEBUG'). We recommend 'INFO' in most case.
 
 
 ## Run the model
