@@ -86,7 +86,7 @@ if 'update' in order:
     print 'Retrieving best param from Mri'
     refile = 'mri_summary'
     system(' '.join(['grep \'Final Extreme\'', mrilogfile, '>',refile]))
-    re= parseMRI(refile,runparams['debugmode'])
+    re= parseMRI(refile,runparams['optimwrt'])
     print 'best params:'
     print re
 
