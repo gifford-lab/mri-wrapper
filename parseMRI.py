@@ -9,13 +9,13 @@ def parseMRI(f,optimwrt_ori):
         raw = d.split('{')[1].split('}')[1]
         if not 'Final Extremes' in raw:
             continue
-		if optimwrt == 'Accuracy':
-			choice = 3
-			mlt = 1;
-		elif optimwrt == 'Loss'
-			choice = 5
-			mlt = -1
-		metric = mlt  * float(d.split('Final Extremes')[1].split(optimwrt)[1].split(')')[0].split(' ')[choice])
+	if optimwrt == 'Accuracy':
+	    choice = 2
+	    mlt = 1;
+        elif optimwrt == 'Loss':
+	    choice = 4
+	    mlt = -1
+	metric = mlt  * float(d.split('Final Extremes')[1].split(optimwrt)[1].split(')')[0].split(' ')[choice])
         if metric >  max_metric:
             max_metric = metric
             param = d.split('{')[1].split('}')[0].split(',')
