@@ -109,6 +109,7 @@ model_topdir /data
 data_src NA
 train_trial 2
 debugmode INFO
+optimwrt accuracy
 ```
 
 Constant params: (Don't change)
@@ -133,6 +134,7 @@ Tweakable params:
 + `display`: The iteration interval to display the training loss in training phase. For users who don't care the specific training process, this can be set to arbitrarily large to save time and space
 + `train_trial`: The number of training trial.
 + `debugmode`: The verbosity of log ('NONE'<'INFO'<'DEBUG'). We recommend 'INFO' in most case.
++ `optimwrt`: Choose the best param and training trial wrt to either accuracy or loss
 
 
 ## Run the model

@@ -57,6 +57,8 @@ with open(param_file,'w') as f:
     f.write('modelname %s\n' % modelname)
     f.write('model_batchname %s\n' % 'mri-best')
     f.write('trial_num %s\n' % runparams['train_trial'])
+    f.write('optimwrt %s\n' % runparams['optimwrt'])
+
 
 if 'trainMRI' in order:
     if exists(mrifolder):
@@ -84,7 +86,7 @@ if 'update' in order:
     print 'Retrieving best param from Mri'
     refile = 'mri_summary'
     system(' '.join(['grep \'Final Extreme\'', mrilogfile, '>',refile]))
-    re= parseMRI(refile)
+    re= parseMRI(refile,runparams['debugmode'])
     print 'best params:'
     print re
 

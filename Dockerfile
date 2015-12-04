@@ -7,7 +7,7 @@ RUN pip install scikit-learn
 ## Git clone codes
 COPY . /scripts/mri-wrapper
 RUN git clone https://github.com/haoyangz/Mri-app.git /scripts/Mri-app
-RUN git clone https://haoyangz-ro:12312312@bitbucket.org/haoyangz/caffe-cnn.git /scripts/caffe-cnn
+RUN git clone https://github.com/gifford-lab/caffe-cnn.git /scripts/caffe-cnn
 
 ## Install Mri
 RUN pip install -e git+https://github.com/Mri-monitoring/Mri-python-client.git#egg=mri-master
