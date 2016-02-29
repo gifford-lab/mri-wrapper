@@ -17,3 +17,4 @@ data_src NA
 train_trial 2
 debugmode INFO
 optimwrt accuracy
+outputlayer prob

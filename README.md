@@ -110,6 +110,7 @@ data_src NA
 train_trial 2
 debugmode INFO
 optimwrt accuracy
+outputlayer prob
 ```
 
 Constant params: (Don't change)
@@ -135,6 +136,7 @@ Tweakable params:
 + `train_trial`: The number of training trial.
 + `debugmode`: The verbosity of log ('NONE'<'INFO'<'DEBUG'). We recommend 'INFO' in most case.
 + `optimwrt`: Choose the best param and training trial wrt to either accuracy or loss
++ `outputlayer`: The name of the output blob that will be used as prediction in test phase
 
 
 ## Run the model

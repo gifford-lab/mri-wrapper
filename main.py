@@ -58,6 +58,7 @@ with open(param_file,'w') as f:
     f.write('model_batchname %s\n' % 'mri-best')
     f.write('trial_num %s\n' % runparams['train_trial'])
     f.write('optimwrt %s\n' % runparams['optimwrt'])
+    f.write('outputlayer %s\n' % runparams['outputlayer'])
 
 
 if 'trainMRI' in order:
