@@ -147,10 +147,10 @@ docker run -v DATADIR:/data -v MODELDIR:/model -i --rm --device /dev/nvidiactl -
 
 + `DATADIR`: The topfolder of the output, i.e. $model_dir$
 + `MODELDIR`: The folder containing the model files, hyperparam file and modelname file
-+ `MOREDEVICE`: For each of the GPU device number NUM available,append "--device /dev/nvidiaNUM". For example, if we have two GPU, then it  should be :
++ `MOREDEVICE`: For each of the GPU device available on your machine,append one "--device /dev/nvidiaNUM" where NUM is the number of that device. For hsf1/hsf2 in  Gifford Lab, since there are three GPU, it should be :
 
 ```
---device /dev/nvidia0 --device /dev/nvidia1
+--device /dev/nvidia0 --device /dev/nvidia1 --device /dev/nvidia2
 ```
 + `GPUNUM`: The GPU device number to run
 
