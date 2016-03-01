@@ -15,7 +15,11 @@ def parseMRI(f,optimwrt_ori):
         elif optimwrt == 'Loss':
 	    choice = 4
 	    mlt = -1
-	metric = mlt  * float(d.split('Final Extremes')[1].split(optimwrt)[1].split(')')[0].split(' ')[choice])
+        try:
+            metric = mlt  * float(d.split('Final Extremes')[1].split(optimwrt)[1].split(')')[0].split(' ')[choice])
+        except IndexError:
+            metric = max_metric
+
         if metric >  max_metric:
             max_metric = metric
             param = d.split('{')[1].split('}')[0].split(',')
