@@ -8,6 +8,7 @@ Incooperate [Mri](http://mri.readthedocs.org/en/latest/index.html) and [Caffe-cn
 _Replace the $REPO_HOME$ in the following command with the full path to the repository folder before running_
 
 ```
+docker pull haoyangz/mri-wrapper
 docker run -v $REPO_HOME$/example:/data -v $REPO_HOME$/example:/model -i --rm \
 --device /dev/nvidiactl \
 --device /dev/nvidia-uvm \
@@ -142,7 +143,10 @@ Tweakable params:
 ## Run the model
 
 ```
-docker run -v DATADIR:/data -v MODELDIR:/model -i --rm --device /dev/nvidiactl --device /dev/nvidia-uvm MOREDEVICE haoyangz/mri-wrapper python main.py /model/runparam.list GPUNUM
+docker pull haoyangz/mri-wrapper
+docker run -v DATADIR:/data -v MODELDIR:/model -i --rm \
+	--device /dev/nvidiactl --device /dev/nvidia-uvm MOREDEVICE \
+	haoyangz/mri-wrapper python main.py /model/runparam.list GPUNUM
 ```
 
 + `DATADIR`: The topfolder of the output, i.e. $model_dir$
