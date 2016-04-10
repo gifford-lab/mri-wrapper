@@ -5,6 +5,8 @@ Incooperate [Mri](http://mri.readthedocs.org/en/latest/index.html) and [Caffe-cn
 + NVIDIA 346.46 driver
 
 ## Quick run
+We provide some toy data on which you can quickly perform hyper-parameter searching, training and testing.
+
 _Replace the $REPO_HOME$ in the following command with the full path to the repository folder before running_
 
 ```
@@ -15,34 +17,26 @@ docker run -v $REPO_HOME$/example:/data -v $REPO_HOME$/example:/model -i --rm \
 --device /dev/nvidia0 \
 haoyangz/mri-wrapper python main.py /model/runparam.list 0
 ```
-This will perform hyper-parameter searching, training and testing. The output will be under $REPO_HOME$/example/16_G/mri-best/best_trial/
+The output will be under $REPO_HOME$/example/16_G/mri-best/best_trial/
 
 
 ## Data preparation
 
-Follow the instruction in [Caffe-cnn](https://github.com/gifford-lab/caffe-cnn) to prepare  data under $model_dir$/data/
-
-The only difference is that in [train.txt](https://github.com/gifford-lab/mri-wrapper/tree/master/example/data/train.txt)/[valid.txt](https://github.com/gifford-lab/mri-wrapper/tree/master/example/data/valid.txt)/[test.txt](https://github.com/gifford-lab/mri-wrapper/tree/master/example/data/test.txt), the topfolder should be /data/data.
+Follow the instruction in [Caffe-cnn](https://github.com/gifford-lab/caffe-cnn) to prepare  data under $DATADIR$/data. The only difference is that in [train.txt](https://github.com/gifford-lab/mri-wrapper/tree/master/example/data/train.txt)/[valid.txt](https://github.com/gifford-lab/mri-wrapper/tree/master/example/data/valid.txt)/[test.txt](https://github.com/gifford-lab/mri-wrapper/tree/master/example/data/test.txt), the top folder should be /data/data.
 
 
 
 
 ## Model preparation
 
-List of the files needed:
+All of the files in this part should be saved under $MODELDIR$.
+
+##### Caffe model files
+Follow the instruction in [Caffe-cnn](https://github.com/gifford-lab/caffe-cnn) to prepare caffe model files:
 
 + trainval.prototxt : training architecture
 + solver.prototxt: solver parameter
 + deploy.prototxt: testing architecture
-+ hyperparams.txt: hyper-parameter specification
-+ modelname: the name of the model
-
-##### Generate Caffe model files
-Follow the instruction in [Caffe-cnn](https://github.com/gifford-lab/caffe-cnn) to prepare caffe model files:
-
-+ trainval.prototxt
-+ solver.prototxt
-+ deploy.prototxt
 
 The only differences are:
 
@@ -86,47 +80,21 @@ In "[hyperparams.txt](https://github.com/gifford-lab/mri-wrapper/blob/master/exa
 ##### Specify model name
 In "[modelname](https://github.com/gifford-lab/mri-wrapper/blob/master/example/modelname)" file.
 
-## Prepare runparam.list
-This file specificies other parameters needed for training and testing.
+## Prepare [runparam.list](https://github.com/gifford-lab/mri-wrapper/blob/master/example/runparam.list)
 
-Example : (example/runparam.list)
 
 ```
 MRI_MAXITER  5
-TRAINVAL  /model/trainval.prototxt
-SOLVER  /model/solver.prototxt
-DEPLOY  /model/deploy.prototxt
-HYPER  /model/hyperparams.txt
-CAFFE_ROOT  /scripts/caffe
-MRI_ROOT /scripts/Mri-app
-CAFFECNN_ROOT /scripts/caffe-cnn
 ORDER trainMRI,update,trainCaffe,testCaffe,testEvalCaffe
-modelname_file /model/modelname
 max_iter 6000
 snapshot 100
 test_interval 100
 display 10000
-model_topdir /data
-data_src NA
 train_trial 2
 debugmode INFO
 optimwrt accuracy
 outputlayer prob
 ```
-
-Constant params: (Don't change)
-
-+ `TRAINVAL`: Training model file.
-+ `SOLVER`: Solver file. 
-+ `HYPER`: Hyper-parameter file.
-+ `CAFFE_ROOT`: The path to caffe. 
-+ `MRI_ROOT`: The path to Mri.
-+ `CAFFECNN_ROOT`: The path to caffe-cnn
-+ `modelname_file`: Modelname file.
-+ `model_topdir`: The top folder of the output. 
-+ `data_src`: not used in this version.
-
-Tweakable params:
 
 + `MRI_MAXITER`: The number of hyper-parameter setting to try.
 + `ORDER`: The order to carry out. Usually no need to change.
@@ -140,7 +108,7 @@ Tweakable params:
 + `outputlayer`: The name of the output blob that will be used as prediction in test phase
 
 
-## Run the model
+## Ready to go!
 
 ```
 docker pull haoyangz/mri-wrapper
@@ -149,13 +117,13 @@ docker run -v DATADIR:/data -v MODELDIR:/model -i --rm \
 	haoyangz/mri-wrapper python main.py /model/runparam.list GPUNUM
 ```
 
-+ `DATADIR`: The topfolder of the output, i.e. $model_dir$
++ `DATADIR`: The topfolder of the output. Your data should be under $DATADIR$/data.
 + `MODELDIR`: The folder containing the model files, hyperparam file and modelname file
 + `MOREDEVICE`: For each of the GPU device available on your machine,append one "--device /dev/nvidiaNUM" where NUM is the number of that device. For hsf1/hsf2 in  Gifford Lab, since there are three GPU, it should be :
 
-```
+	```
 --device /dev/nvidia0 --device /dev/nvidia1 --device /dev/nvidia2
 ```
 + `GPUNUM`: The GPU device number to run
 
-The output will be generated under $model_dir$/thenameofthemodel, where `thenameofthemodel` is the name specified in the file $MODELDIR$/modelname .
+	The output will be generated under $DATADIR$/thenameofthemodel, where `thenameofthemodel` is the name specified in the file $MODELDIR$/modelname .
