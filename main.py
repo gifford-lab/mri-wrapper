@@ -18,12 +18,17 @@ for i in range(len(runparamdata)):
     runparams.update({line[0]:line[1]})
 
 order = runparams['ORDER']
-CAFFE_ROOT = runparams['CAFFE_ROOT']
+CAFFE_ROOT = '/scripts/caffe'
 mri_maxiter = int(runparams['MRI_MAXITER'])
-mri_ROOT = runparams['MRI_ROOT']
-CAFFECNN_ROOT = runparams['CAFFECNN_ROOT']
+mri_ROOT = '/scripts/Mri-app'
+CAFFECNN_ROOT = '/scripts/caffe-cnn'
+runparams['TRAINVAL'] = '/model/trainval.prototxt'
+runparams['SOLVER'] = '/model/solver.prototxt'
+runparams['DEPLOY'] = '/model/deploy.prototxt'
+runparams['HYPER'] = '/model/hyperparams.txt'
+runparams['model_topdir'] = '/data'
 
-with open(runparams['modelname_file'],'r') as f:
+with open('/model/modelname','r') as f:
     modelname = [x.strip() for x in f][0]
 
 mrifolder = join(runparams['model_topdir'],modelname,'mri')
@@ -45,17 +50,12 @@ system(' '.join(['echo','\'device_id: '+gpunum+'\'','>>',solver_file]))
 transfer_params = {'max_iter','snapshot','test_interval','display'}
 
 with open(param_file,'w') as f:
-    f.write('model_topdir %s\n' % runparams['model_topdir'])
-    f.write('data_src %s\n' % runparams['data_src'])
-    f.write('predictmodel_batch mri-best\n')
-    f.write('predict_filelist data/test.txt\n')
+    f.write('output_topdir %s\n' % runparams['model_topdir'])
+    f.write('caffemodel_topdir %s\n' % mri_bestfolder)
+    f.write('batch2predict mri-best\n')
     f.write('gpunum %s\n' % gpunum)
-    f.write('solver_file %s\n' % os.path.join(mri_bestfolder,'solver.prototxt'))
-    f.write('deploy_file %s\n' % os.path.join(mri_bestfolder,'deploy.prototxt'))
-    f.write('trainval_file %s\n' % os.path.join(mri_bestfolder,'trainval.prototxt'))
-    f.write('codedir %s\n' % CAFFECNN_ROOT)
-    f.write('modelname %s\n' % modelname)
-    f.write('model_batchname %s\n' % 'mri-best')
+    f.write('model_name %s\n' % modelname)
+    f.write('batch_name %s\n' % 'mri-best')
     f.write('trial_num %s\n' % runparams['train_trial'])
     f.write('optimwrt %s\n' % runparams['optimwrt'])
     f.write('outputlayer %s\n' % runparams['outputlayer'])
