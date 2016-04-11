@@ -22,7 +22,7 @@ The output will be under $REPO_HOME$/example/16_G/mri-best/best_trial/
 
 ## Data preparation
 
-Follow the instruction in [Caffe-cnn](https://github.com/gifford-lab/caffe-cnn) to prepare  data under $DATADIR$/data. The only difference is that in [train.txt](https://github.com/gifford-lab/mri-wrapper/tree/master/example/data/train.txt)/[valid.txt](https://github.com/gifford-lab/mri-wrapper/tree/master/example/data/valid.txt)/[test.txt](https://github.com/gifford-lab/mri-wrapper/tree/master/example/data/test.txt), the top folder should be /data/data.
+Follow the instruction in [Caffe-cnn](https://github.com/gifford-lab/caffe-cnn) to prepare  data under $DATADIR$/data. 
 
 
 
@@ -38,15 +38,10 @@ Follow the instruction in [Caffe-cnn](https://github.com/gifford-lab/caffe-cnn) 
 + solver.prototxt: solver parameter
 + deploy.prototxt: testing architecture
 
-The only differences are:
+The only differences:
 
 + In trainval.prototxt, the "source" in the input layer should be /data/data/train.txt and /data/data/valid.txt
-+ The following parameters in solver.prototxt are used for hyper-parameter search only. The ones used for actual training need to be specified in [runparam.list](https://github.com/gifford-lab/mri-wrapper/blob/master/example/runparam.prototxt)
-	
-	+ `max_iter` 
-	+ `test_interval`
-	+ `snapshot`: In hyper-parameter search phase, we don't directly use the trained model. Therefore set this as arbitrarily large to save time and space.
-	+ `display`: As we don't care training loss in hyper-parameter search phase, this should be set to arbitrarily large to save time and space.
+
 
 ##### Modify model files for hyper-parameter search
 
@@ -86,10 +81,10 @@ In "[modelname](https://github.com/gifford-lab/mri-wrapper/blob/master/example/m
 ```
 MRI_MAXITER  5
 ORDER trainMRI,update,trainCaffe,testCaffe,testEvalCaffe
-max_iter 6000
-snapshot 100
-test_interval 100
-display 10000
+search_max_iter 6000
+search_snapshot 100
+search_test_interval 100
+search_display 10000
 train_trial 2
 debugmode INFO
 optimwrt accuracy
@@ -98,10 +93,10 @@ outputlayer prob
 
 + `MRI_MAXITER`: The number of hyper-parameter setting to try.
 + `ORDER`: The order to carry out. Usually no need to change.
-+ `max_iter`: Maximum number of iteration in training phase.
-+ `test_interval`: The iteration interval to test on validation set in training phase.
-+ `snapshot`: The iteration iterval to save model in training phase. Should use same value as `test_interval`.
-+ `display`: The iteration interval to display the training loss in training phase. For users who don't care the specific training process, this can be set to arbitrarily large to save time and space
++ `search_max_iter`: Maximum number of iteration in hyper-parameter search.
++ `search_test_interval`: The iteration interval to test on validation set in hyper-parameter search.
++ `search_snapshot`: The iteration iterval to save model in hyper-parameter search.
++ `search_display`: The iteration interval to display the training loss in hyper-parameter search.
 + `train_trial`: The number of training trial.
 + `debugmode`: The verbosity of log ('NONE'<'INFO'<'DEBUG'). We recommend 'INFO' in most case.
 + `optimwrt`: Choose the best param and training trial wrt to either accuracy or loss

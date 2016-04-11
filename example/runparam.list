@@ -1,10 +1,10 @@
-MRI_MAXITER  5
+MRI_MAXITER  2
 ORDER trainMRI,update,trainCaffe,testCaffe,testEvalCaffe
-max_iter 6000
-snapshot 100
-test_interval 100
-display 10000
+search_max_iter 3000
+search_snapshot 10000
+search_test_interval 100
+search_display 10000
 train_trial 2
-debugmode INFO
+debugmode DEBUG
 optimwrt accuracy
 outputlayer prob

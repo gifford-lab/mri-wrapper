@@ -6,9 +6,9 @@ momentum: %{momentum}%
 delta: %{delta}%
 lr_policy: "fixed"
 display: 10000
-max_iter: 3000
+max_iter: 6000
 weight_decay: 0.0005
-snapshot: 10000
+snapshot: 100
 snapshot_prefix: "train"
 solver_mode: GPU
 solver_type: ADADELTA

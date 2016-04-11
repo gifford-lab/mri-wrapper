@@ -16,6 +16,7 @@ runparams = {}
 for i in range(len(runparamdata)):
     line = runparamdata[i].strip().split()
     runparams.update({line[0]:line[1]})
+    print line[0] +' : '+str(line[1])
 
 order = runparams['ORDER']
 CAFFE_ROOT = '/scripts/caffe'
@@ -41,12 +42,6 @@ train_params = join(cwd,'train.params')
 hyperparam = join(cwd,'hyperparams.txt')
 mrilogfile = join(mrifolder,'mri.log')
 
-system(' '.join(['cp ',runparams['TRAINVAL'],trainval_file]))
-system(' '.join(['cp ',runparams['SOLVER'],solver_file]))
-system(' '.join(['cp ',runparams['DEPLOY'],deploy_tempalte]))
-system(' '.join(['cp ',runparams['HYPER'],hyperparam]))
-system(' '.join(['echo','\'device_id: '+gpunum+'\'','>>',solver_file]))
-
 transfer_params = {'max_iter','snapshot','test_interval','display'}
 
 with open(param_file,'w') as f:
@@ -62,6 +57,21 @@ with open(param_file,'w') as f:
 
 
 if 'trainMRI' in order:
+    system(' '.join(['cp ',runparams['TRAINVAL'],trainval_file]))
+    system(' '.join(['cp ',runparams['DEPLOY'],deploy_tempalte]))
+    system(' '.join(['cp ',runparams['HYPER'],hyperparam]))
+
+    with open(solver_file,'w') as outs,open(runparams['SOLVER'],'r') as ins:
+        for x in ins:
+            key = x.strip().split(':')[0].split(' ')[0]
+            if key in transfer_params:
+                newkey = 'search_'+key
+                outs.write('%s\n' % ':'.join([key,runparams[newkey]]))
+            else:
+                outs.write(x)
+
+    system(' '.join(['echo','\'device_id: '+gpunum+'\'','>>',solver_file]))
+
     if exists(mrifolder):
         print 'output folder ' + mrifolder + ' exists! Will be removed'
         system('rm -r ' + mrifolder)
@@ -84,6 +94,12 @@ if 'trainMRI' in order:
     chdir(cwd)
 
 if 'update' in order:
+    system(' '.join(['cp ',runparams['TRAINVAL'],trainval_file]))
+    system(' '.join(['cp ',runparams['SOLVER'],solver_file]))
+    system(' '.join(['cp ',runparams['DEPLOY'],deploy_tempalte]))
+    system(' '.join(['cp ',runparams['HYPER'],hyperparam]))
+    system(' '.join(['echo','\'device_id: '+gpunum+'\'','>>',solver_file]))
+
     print 'Retrieving best param from Mri'
     refile = 'mri_summary'
     system(' '.join(['grep \'Final Extreme\'', mrilogfile, '>',refile]))
@@ -91,7 +107,6 @@ if 'update' in order:
     print 'best params:'
     print re
 
-    calibsolver = join(mri_bestfolder,'solver.prototxt.calib')
     trainsolver = join(mri_bestfolder,'solver.prototxt')
     trainproto = join(mri_bestfolder,'trainval.prototxt')
     testdeploy = join(mri_bestfolder,'deploy.prototxt')
@@ -101,20 +116,12 @@ if 'update' in order:
     key = '\'' + ';'.join([x for x in re.keys()]) + '\''
     value = '\'' + ';'.join([re[x] for x in re.keys()]) + '\''
 
-    cmd = ' '.join(['Rscript', os.path.join(cwd,'subPlaceholder.R'),solver_file,key,value,calibsolver])
+    cmd = ' '.join(['Rscript', os.path.join(cwd,'subPlaceholder.R'),solver_file,key,value,trainsolver])
     os.system(cmd)
     cmd = ' '.join(['Rscript', os.path.join(cwd,'subPlaceholder.R'),trainval_file,key,value,trainproto])
     os.system(cmd)
     cmd = ' '.join(['Rscript', os.path.join(cwd,'subPlaceholder.R'),deploy_tempalte,key,value,testdeploy])
     os.system(cmd)
-
-    with open(trainsolver,'w') as outs,open(calibsolver,'r') as ins:
-        for x in ins:
-            key = x.strip().split(':')[0].split(' ')[0]
-            if key in transfer_params:
-                outs.write('%s\n' % ':'.join([key,runparams[key]]))
-            else:
-                outs.write(x)
 
 if 'trainCaffe' in order:
     print 'Training caffe on best mri-params'
