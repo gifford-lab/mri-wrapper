@@ -11,13 +11,19 @@ _Replace the $REPO_HOME$ in the following command with the full path to the repo
 
 ```
 docker pull haoyangz/mri-wrapper
-docker run -v $REPO_HOME$/example:/data -v $REPO_HOME$/example:/model -i --rm \
+docker run -v $REPO_HOME$/example:/data -v $REPO_HOME$/example/model:/model -i --rm \
 --device /dev/nvidiactl \
 --device /dev/nvidia-uvm \
 --device /dev/nvidia0 \
 haoyangz/mri-wrapper python main.py /model/runparam.list 0
 ```
-The output will be under $REPO_HOME$/example/16_G/mri-best/best_trial/
+This is what happens if it runs:
+
++ It will search for the best hyper-parameters for a toy [Caffe model](https://github.com/gifford-lab/mri-wrapper/tree/master/example/model/) on some toy [training and validation data](https://github.com/gifford-lab/mri-wrapper/tree/master/example/data). 
+
++ It will pick the set of parameters with best performance, and try a few times to train on the training data. 
+
++ It will find the trial and iteration where the model reaches the best performance on the validation set, and  make prediction with it on the toy testing [data](https://github.com/gifford-lab/mri-wrapper/tree/master/example/data). The output will be under $REPO_HOME$/example/16_G/mri-best/best_trial/
 
 
 ## Data preparation
@@ -97,9 +103,9 @@ outputlayer prob
 + `search_test_interval`: The iteration interval to test on validation set in hyper-parameter search.
 + `search_snapshot`: The iteration iterval to save model in hyper-parameter search.
 + `search_display`: The iteration interval to display the training loss in hyper-parameter search.
-+ `train_trial`: The number of training trial.
++ `train_trial`: After the best hyper-params are chosen, we will train this number of times and pick the best trial.
 + `debugmode`: The verbosity of log ('NONE'<'INFO'<'DEBUG'). We recommend 'INFO' in most case.
-+ `optimwrt`: Choose the best param and training trial wrt to either accuracy or loss
++ `optimwrt`: Choose the best param and training trial with respect to either accuracy or loss
 + `outputlayer`: The name of the output blob that will be used as prediction in test phase
 
 
