@@ -54,6 +54,8 @@ with open(param_file,'w') as f:
     f.write('trial_num %s\n' % runparams['train_trial'])
     f.write('optimwrt %s\n' % runparams['optimwrt'])
     f.write('outputlayer %s\n' % runparams['outputlayer'])
+    if 'predict_on' in runparams:
+        f.write('predict_filelist %s\n' % runparams['predict_on'])
 
 
 if 'trainMRI' in order:

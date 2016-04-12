@@ -53,13 +53,13 @@ The only differences:
 
 For each hyperparameter to tune, replace the value with %{param}% instead. For example:
 
-In [solver.prototxt](https://github.com/gifford-lab/mri-wrapper/blob/master/example/solver.prototxt):
+In [solver.prototxt](https://github.com/gifford-lab/mri-wrapper/blob/master/example/model/solver.prototxt):
 
 ```
 delta: %{delta}%
 ```
 
-In [trainval.prototxt](https://github.com/gifford-lab/mri-wrapper/blob/master/example/trainval.prototxt) / [deploy.prototxt](https://github.com/gifford-lab/mri-wrapper/blob/master/example/deploy.prototxt): 
+In [trainval.prototxt](https://github.com/gifford-lab/mri-wrapper/blob/master/example/model/trainval.prototxt) / [deploy.prototxt](https://github.com/gifford-lab/mri-wrapper/blob/master/example/model/deploy.prototxt): 
 
 ```
 layer {
@@ -76,12 +76,12 @@ _Note that every parameter changed in trainval.prototxt should also be modified 
 
 ##### Specify value choices of hyper-parmeters
 
-In "[hyperparams.txt](https://github.com/gifford-lab/mri-wrapper/blob/master/example/hyperparams.txt)" file. 
+In "[hyperparams.txt](https://github.com/gifford-lab/mri-wrapper/blob/master/example/model/hyperparams.txt)" file. 
 
 ##### Specify model name
-In "[modelname](https://github.com/gifford-lab/mri-wrapper/blob/master/example/modelname)" file.
+In "[modelname](https://github.com/gifford-lab/mri-wrapper/blob/master/example/model/modelname)" file.
 
-## Prepare [runparam.list](https://github.com/gifford-lab/mri-wrapper/blob/master/example/runparam.list)
+## Prepare [runparam.list](https://github.com/gifford-lab/mri-wrapper/blob/master/example/model/runparam.list)
 
 
 ```
@@ -107,6 +107,9 @@ outputlayer prob
 + `debugmode`: The verbosity of log ('NONE'<'INFO'<'DEBUG'). We recommend 'INFO' in most case.
 + `optimwrt`: Choose the best param and training trial with respect to either accuracy or loss
 + `outputlayer`: The name of the output blob that will be used as prediction in test phase
+
+Optional argument:
++ `predict_on`:  the relative (to 'DATADIR') path of the file containing all the h5py files to predict on. (default: data/test.txt)
 
 
 ## Ready to go!
