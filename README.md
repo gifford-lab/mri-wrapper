@@ -5,13 +5,11 @@ Incooperate [Mri](http://mri.readthedocs.org/en/latest/index.html) and [Caffe-cn
 + NVIDIA 346.46 driver
 
 ## Quick run
-We provide some toy data on which you can quickly perform hyper-parameter searching, training and testing.
-
-_Replace the $REPO_HOME$ in the following command with the full path to the repository folder before running_
+We provide some toy data on which you can quickly perform hyper-parameter searching, training and testing._You need to run it under the repository directory_.
 
 ```
 docker pull haoyangz/mri-wrapper
-docker run -v $REPO_HOME$/example:/data -v $REPO_HOME$/example/model:/model -i --rm \
+docker run -v $(pwd)/example:/data -v $(pwd)/example/model:/model -i --rm \
 --device /dev/nvidiactl \
 --device /dev/nvidia-uvm \
 --device /dev/nvidia0 \
