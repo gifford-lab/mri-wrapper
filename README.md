@@ -81,7 +81,7 @@ In "[modelname](https://github.com/gifford-lab/mri-wrapper/blob/master/example/m
 ## Prepare [runparam.list](https://github.com/gifford-lab/mri-wrapper/blob/master/example/model/runparam.list)
 
 General argument:
-+ `ORDER`: The order to carry out. 
++ `ORDER`: The following orders are accepted. Multiple orders should be concatenated by comma, and the relative order should be maintained.
 	+ `trainMRI`: hyper-parameter tuning
 	+ `update`: pick the best hyper-parameter
 	+ `trainCaffe`: train on the training set with the best hyper-parameter
@@ -133,4 +133,4 @@ For hyper-parameter tuning, training and testing, all the output will be generat
 
 After training, the information of the best model will be saved as *bestiter.caffemodel* and *deploy.prototxt* under  *$DATA_DIR$/$thenameofthemodel$/mri-best/best_trial/*.
 
-For testing and prediction, the output of the first layer specified in `outputlayer` (see above section on params.list) will be saved to a text file named *bestiter.pred* and the output of all layers will be saved in a Pickle object named *bestiter.pred.params.pkl*. For testing, they will be both under *$DATA_DIR$/$thenameofthemodel$/mri-best/best_trial/*. For prediction, they will be under `predict_outdir` as specified in *params.list*.
+For testing and prediction, the output of the first layer specified in `outputlayer` (see above section on params.list) will be saved to a text file named *bestiter.pred* and the output of all layers will be saved in a Pickle object named *bestiter.pred.params.pkl*. For testing, they will be both under *$DATA_DIR$/$thenameofthemodel$/mri-best/best_trial/*. For prediction, they will be under `predict_outdir` as specified in [runparams.list](https://github.com/gifford-lab/mri-wrapper/blob/master/example/model/runparam.list).
