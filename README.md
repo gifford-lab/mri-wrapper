@@ -98,7 +98,7 @@ If you want to perform hyper-parameter tuning, training and testing:
 + `train_trial`: After the best hyper-params are chosen, we will train this number of times and pick the best trial.
 + `debugmode`: The verbosity of log ('NONE'<'INFO'<'DEBUG'). We recommend 'INFO' in most case.
 + `optimwrt`: Choose the best param and training trial with respect to either accuracy or loss
-+ `outputlayer`: The name of the output blob that will be used as prediction in test phase
++ `outputlayer`: The name of the output layer that will be used as prediction in test phase. 
 
 If you want to  predict on new data with a trained model:
 + `outputlayer`: Same as above.
@@ -129,4 +129,8 @@ docker run -v DATADIR:/data -v MODELDIR:/model -i --rm \
 + `GPUNUM`: The GPU device number to run
 
 
-For hyper-parameter tuning, training and testing, the output will be generated under *$DATADIR$/thenameofthemodel*, where `thenameofthemodel` is the name specified in the file $MODELDIR$/modelname .
+For hyper-parameter tuning, training and testing, all the output will be generated under *$DATADIR$/$thenameofthemodel$*, where `$thenameofthemodel$` is the name specified in the file [*$MODELDIR$/modelname*](https://github.com/gifford-lab/mri-wrapper/blob/master/example/model/modelname) .
+
+After training, the information of the best model will be saved as *bestiter.caffemodel* and *deploy.prototxt* under  *$DATA_DIR$/$thenameofthemodel$/mri-best/best_trial/*.
+
+For testing and prediction, the output of the first layer specified in `outputlayer` (see above section on params.list) will be saved to a text file named *bestiter.pred* and the output of all layers will be saved in a Pickle object named *bestiter.pred.params.pkl*. For testing, they will be both under *$DATA_DIR$/$thenameofthemodel$/mri-best/best_trial/*. For prediction, they will be under `predict_outdir` as specified in *params.list*.
