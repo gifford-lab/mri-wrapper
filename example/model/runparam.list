@@ -8,3 +8,7 @@ train_trial 2
 debugmode DEBUG
 optimwrt accuracy
 outputlayer prob
+deploy2predictW /data/newdata/deploy.prototxt
+caffemodel2predictW /data/newdata/bestiter.caffemodel
+data2predict /data/newdata/test.txt
+predict_outdir /data/newdata_out

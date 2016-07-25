@@ -56,6 +56,9 @@ with open(param_file,'w') as f:
     f.write('outputlayer %s\n' % runparams['outputlayer'])
     if 'predict_on' in runparams:
         f.write('predict_filelist %s\n' % runparams['predict_on'])
+    for code in ['deploy2predictW','caffemodel2predictW','data2predict','predict_outdir']:
+        if code in runparams:
+            f.write(code+' %s\n' % runparams[code])
 
 
 if 'trainMRI' in order:
@@ -81,13 +84,11 @@ if 'trainMRI' in order:
     print 'Trainning MRI'
     key = '\'MRIDIR\''
     value = '\'' + mrifolder +'\''
-    cmd = ' '.join(['Rscript', join(cwd,'subPlaceholder.R'),join(cwd,'config.txt.template'),key,value,join(cwd,'config.txt')])
-    system(cmd)
+    system(' '.join(['Rscript', join(cwd,'subPlaceholder.R'),join(cwd,'config.txt.template'),key,value,join(cwd,'config.txt')]))
 
     key = '\'' + ';'.join(['MRIDIR','CAFFEROOT','INFO']) + '\''
     value = '\'' + ';'.join([mrifolder,CAFFE_ROOT,runparams['debugmode']]) + '\''
-    cmd = ' '.join(['Rscript', join(cwd,'subPlaceholder.R'),join(cwd,'config.template'),key,value,join(mri_ROOT,'mriapp','config')])
-    system(cmd)
+    system(' '.join(['Rscript', join(cwd,'subPlaceholder.R'),join(cwd,'config.template'),key,value,join(mri_ROOT,'mriapp','config')]))
 
     system('python generate_tasks.py random -n '+str(mri_maxiter))
 
@@ -118,21 +119,22 @@ if 'update' in order:
     key = '\'' + ';'.join([x for x in re.keys()]) + '\''
     value = '\'' + ';'.join([re[x] for x in re.keys()]) + '\''
 
-    cmd = ' '.join(['Rscript', os.path.join(cwd,'subPlaceholder.R'),solver_file,key,value,trainsolver])
-    os.system(cmd)
-    cmd = ' '.join(['Rscript', os.path.join(cwd,'subPlaceholder.R'),trainval_file,key,value,trainproto])
-    os.system(cmd)
-    cmd = ' '.join(['Rscript', os.path.join(cwd,'subPlaceholder.R'),deploy_tempalte,key,value,testdeploy])
-    os.system(cmd)
+    system(' '.join(['Rscript', os.path.join(cwd,'subPlaceholder.R'),solver_file,key,value,trainsolver]))
+    system(' '.join(['Rscript', os.path.join(cwd,'subPlaceholder.R'),trainval_file,key,value,trainproto]))
+    system(' '.join(['Rscript', os.path.join(cwd,'subPlaceholder.R'),deploy_tempalte,key,value,testdeploy]))
 
 if 'trainCaffe' in order:
     print 'Training caffe on best mri-params'
-    os.system(' '.join(['python',CAFFECNN_ROOT+'/run.py','train',param_file]))
+    system(' '.join(['python',CAFFECNN_ROOT+'/run.py','train',param_file]))
 
 if 'testCaffe' in order:
     print 'Testing caffe on best mri-params'
-    os.system(' '.join(['python',CAFFECNN_ROOT+'/run.py','test',param_file]))
+    system(' '.join(['python',CAFFECNN_ROOT+'/run.py','test',param_file]))
 
 if 'testEvalCaffe' in order:
     print 'Evaluating caffe on best mri-params'
-    os.system(' '.join(['python',CAFFECNN_ROOT+'/run.py','test_eval',param_file]))
+    system(' '.join(['python',CAFFECNN_ROOT+'/run.py','test_eval',param_file]))
+
+if 'predictCaffe' in order:
+    print 'Predict with a trained Caffe model'
+    system(' '.join(['python',CAFFECNN_ROOT+'/run.py','pred',param_file]))
